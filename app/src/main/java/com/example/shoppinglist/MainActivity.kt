@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShoppingListTheme {
                 SimpleTextField()
+                VisualList()
                 }
             }
         }
@@ -69,7 +71,6 @@ fun SimpleTextField() {
     }
 }
 
-
 fun AddToList(amount: String, grocery: String) {
     if (amount != "" && grocery != "") {
         var newItem = Groceries()
@@ -83,6 +84,12 @@ fun AddToList(amount: String, grocery: String) {
 
 @Composable
 fun VisualList(){
+    einkaufsListe.forEach { item ->
+        Text(
+            text = "${item.amount}x ${item.name}",
+            modifier = Modifier.clickable{einkaufsListe.remove(item)}
+        )
+    }
 }
 
 @Preview(
@@ -93,5 +100,6 @@ fun VisualList(){
 fun GreetingPreview() {
     ShoppingListTheme {
         SimpleTextField()
+        VisualList()
     }
 }
