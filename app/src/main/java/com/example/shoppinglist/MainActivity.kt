@@ -36,13 +36,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-var einkaufsListe = ArrayList<Groceries>()
-
+// Jedes Element der Liste ist Teil dieser Klasse
 class Groceries{
     var name = ""
     var amount = ""
 }
 
+// braucht flexible Klasse, um das UI updaten zu können bei neuen
+var einkaufsListe = ArrayList<Groceries>()
+
+// Textfelder zum Eingeben von Element und der Anzahl davon
 @Composable
 fun SimpleTextField() {
     Column (modifier = Modifier.padding(16.dp)) {
@@ -52,6 +55,7 @@ fun SimpleTextField() {
             onValueChange = {
                 text = it
             },
+            //ermöglicht am Handy nur Texteingabe
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             placeholder = { Text(text = "Milch, Beeren, Brot...") }
         )
@@ -61,16 +65,19 @@ fun SimpleTextField() {
             onValueChange = {
                 amount = it
             },
+            // ermöglicht nur Eingabe von Zahlen am Handy
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(text = "Wie viel?") },
         )
-        ElevatedButton(onClick = { AddToList(amount.toString(), text.toString()) }
+        //Button der die eingegeben Werte aufnimmt und übergibt
+        ElevatedButton(onClick = { AddToList(amount.text, text.text) }
         ){
             Text("Auf die Liste!")
         }
     }
 }
 
+// fügt neues Objekt zur Liste hinzu
 fun AddToList(amount: String, grocery: String) {
     if (amount != "" && grocery != "") {
         var newItem = Groceries()
@@ -82,6 +89,7 @@ fun AddToList(amount: String, grocery: String) {
     }
 }
 
+// soll die Liste visualieren indem es über diese iteriert
 @Composable
 fun VisualList(){
     einkaufsListe.forEach { item ->
@@ -97,7 +105,7 @@ fun VisualList(){
     showSystemUi = true
 )
 @Composable
-fun GreetingPreview() {
+fun ListPreview() {
     ShoppingListTheme {
         SimpleTextField()
         VisualList()
