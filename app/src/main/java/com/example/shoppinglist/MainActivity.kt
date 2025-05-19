@@ -22,32 +22,50 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.shoppinglist.ui.theme.ShoppingListTheme
+import androidx.compose.runtime.mutableStateListOf
 
+
+
+//Mainactivity erbt von ComponentActivity. Dabei erbt die neue Klasse MainActivity ein Set an
+// Funktionen wie savedInstanceState: Bundle?, die erweitert oder überschrieben werden können.
+// Das wird hier auch direkt gemacht. Durch super wird der Zugriff auf die unteren Klassen möglich
+//gemacht
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // weil kein primary constructor da ist, wird mit super (secondaryConstrcutor neue
+        // Klassen initialisert oder Funtionen)
         super.onCreate(savedInstanceState)
+        // App nimmt alles an Bildschirm ein
         enableEdgeToEdge()
+        // App zeigt SimpleTextfield und VisualList
         setContent {
+            Column(){
             ShoppingListTheme {
                 SimpleTextField()
                 VisualList()
                 }
             }
+            }
         }
     }
 
 // Jedes Element der Liste ist Teil dieser Klasse
+// Klasse enthält die Variablen Name und Amount
 class Groceries{
     var name = ""
     var amount = ""
 }
 
 // braucht flexible Klasse, um das UI updaten zu können bei neuen
-var einkaufsListe = ArrayList<Groceries>()
+// Neue Variable, die Einkaufsliste ist in dem Fall eine Array List, aus Grocery-Klassen
+var einkaufsListe = mutableStateListOf<Groceries>()
 
 // Textfelder zum Eingeben von Element und der Anzahl davon
+// Composable ist eine Annotation, die die Funktion zusammensetzbar macht, sie kann also Variablen
+// Entgegennehmen und damit was machen
 @Composable
 fun SimpleTextField() {
+    // In einer Spalte werden die InputField für Text und Amount ausgegeben, der Button auch
     Column (modifier = Modifier.padding(16.dp)) {
         var text by remember { mutableStateOf(TextFieldValue("")) }
         OutlinedTextField(
@@ -65,25 +83,30 @@ fun SimpleTextField() {
             onValueChange = {
                 amount = it
             },
-            // ermöglicht nur Eingabe von Zahlen am Handy
+            // ermöglicht nur Eingabe von Zahlen am Handy als String, nciht als Int oder so
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(text = "Wie viel?") },
         )
+
         //Button der die eingegeben Werte aufnimmt und übergibt
-        ElevatedButton(onClick = { AddToList(amount.text, text.text) }
+        ElevatedButton(onClick = { addToList(amount.text, text.text)  },
         ){
             Text("Auf die Liste!")
         }
     }
 }
 
+
 // fügt neues Objekt zur Liste hinzu
-fun AddToList(amount: String, grocery: String) {
+// Die Keyboardtypes sind alles Strings, die Übergeben werden
+fun addToList(amount: String, grocery: String) {
     if (amount != "" && grocery != "") {
-        var newItem = Groceries()
+        val newItem = Groceries()
         newItem.name = grocery
         newItem.amount = amount
         einkaufsListe.add(newItem)
+
+
     } else {
     return
     }
@@ -91,12 +114,24 @@ fun AddToList(amount: String, grocery: String) {
 
 // soll die Liste visualieren indem es über diese iteriert
 @Composable
-fun VisualList(){
-    einkaufsListe.forEach { item ->
-        Text(
-            text = "${item.amount}x ${item.name}",
-            modifier = Modifier.clickable{einkaufsListe.remove(item)}
-        )
+fun VisualList() {
+    Column(modifier = Modifier.padding(16.dp)) {
+    /*Text(
+        text = "Ich bin da!"
+
+    )*/
+
+
+        einkaufsListe.forEach { item ->
+            Text(
+
+                text = "${item.amount}x ${item.name}",
+                modifier = Modifier.clickable { einkaufsListe.remove(item) }
+            )
+
+
+        }
+
     }
 }
 
