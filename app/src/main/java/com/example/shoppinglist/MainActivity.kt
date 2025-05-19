@@ -62,7 +62,7 @@ var einkaufsListe = mutableStateListOf<Groceries>()
 
 // Textfelder zum Eingeben von Element und der Anzahl davon
 // Composable ist eine Annotation, die die Funktion zusammensetzbar macht, sie kann also Variablen
-// Entgegennehmen und damit was machen
+// Entgegennehmen und damit was machen.
 @Composable
 fun SimpleTextField() {
     // In einer Spalte werden die InputField für Text und Amount ausgegeben, der Button auch
