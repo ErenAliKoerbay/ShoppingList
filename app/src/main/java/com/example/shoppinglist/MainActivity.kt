@@ -29,7 +29,7 @@ import androidx.compose.runtime.mutableStateListOf
 //Mainactivity erbt von ComponentActivity. Dabei erbt die neue Klasse MainActivity ein Set an
 // Funktionen wie savedInstanceState: Bundle?, die erweitert oder überschrieben werden können.
 // Das wird hier auch direkt gemacht. Durch super wird der Zugriff auf die unteren Klassen möglich
-//gemacht
+//gemacht.
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // weil kein primary constructor da ist, wird mit super (secondaryConstrcutor neue
